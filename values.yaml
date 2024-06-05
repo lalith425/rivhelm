@@ -1,0 +1,7 @@
+otelCollector:
+  image: otel/opentelemetry-collector-contrib:latest
+prometheus:
+  image: prom/prometheus
+grafana:
+  image: grafana/grafana
+  adminPassword: admin

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+      - name: otel-collector
+        image: {{ .Values.otelCollector.image }}
+        args: ["--config=/etc/otelcol-config/otel-collector-config.yml"]
+        ports:
+          - containerPort: 1888
+          - containerPort: 8888
+          - containerPort: 8889
+          - containerPort: 13133
+          - containerPort: 4317
+          - containerPort: 4318
+          - containerPort: 55679
+        volumeMounts:
+          - name: otel-collector-config-volume
+            mountPath: /etc/otelcol-config
+      volumes:
+      - name: otel-collector-config-volume
+        configMap:
+          name: otel-collector-config
